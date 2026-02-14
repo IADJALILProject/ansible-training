@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerAdmin {{ server_admin | default('webmaster@localhost') }}
+    ServerName {{ server_name }}
+    ServerAlias www.{{ server_name }}
+
+    DocumentRoot {{ document_root }}
+
+    <Directory {{ document_root }}>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog /var/log/apache2/{{ server_name }}_error.log
+    CustomLog /var/log/apache2/{{ server_name }}_access.log combined
+</VirtualHost>

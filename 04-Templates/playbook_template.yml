@@ -1,0 +1,22 @@
+---
+- name: Challenge TP4 - Templates Jinja2
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Créer le dossier du site
+      ansible.builtin.file:
+        path: /var/www/monsite
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Déployer le fichier index.html depuis le template
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: /var/www/monsite/index.html
+        owner: root
+        group: root
+        mode: '0644'

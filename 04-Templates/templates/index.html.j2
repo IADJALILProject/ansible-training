@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Informations système</title>
+</head>
+<body>
+  <h1>Bienvenue sur {{ ansible_facts.hostname }}</h1>
+  <ul>
+    <li><strong>OS :</strong> {{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}</li>
+    <li><strong>Uptime :</strong> {{ ansible_facts.uptime_seconds }} secondes</li>
+    <li><strong>Mémoire totale :</strong> {{ ansible_facts.memtotal_mb }} MB</li>
+    <li><strong>Nombre de CPU :</strong> {{ ansible_facts.processor_cores }} cœurs ({{ ansible_facts.processor[0] }})</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,41 @@
+---
+- name: TP4 - Templates Jinja2 (version Codespaces)
+  hosts: localhost
+  connection: local
+  become: true
+
+  vars:
+    server_name: monsite.local
+    document_root: /var/www/monsite
+
+  tasks:
+    - name: Installer Apache
+      ansible.builtin.package:
+        name: apache2
+        state: present
+
+    - name: Créer le dossier du site
+      ansible.builtin.file:
+        path: "{{ document_root }}"
+        state: directory
+        mode: '0755'
+
+    - name: Créer un index.html
+      ansible.builtin.copy:
+        dest: "{{ document_root }}/index.html"
+        content: "<h1>Bienvenue sur {{ server_name }}</h1>"
+        mode: '0644'
+
+    - name: Générer le fichier de conf Apache
+      ansible.builtin.template:
+        src: templates/apache_vhost.conf.j2
+        dest: "/etc/apache2/sites-available/{{ server_name }}.conf"
+        mode: '0644'
+
+    - name: Activer le site
+      ansible.builtin.command: a2ensite {{ server_name }}.conf
+      notify: Reload Apache
+
+  handlers:
+    - name: Reload Apache
+      ansible.builtin.command: apache2ctl graceful
