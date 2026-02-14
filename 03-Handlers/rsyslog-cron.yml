@@ -1,0 +1,22 @@
+- name: Challenge rsyslog - version Codespaces
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Installer rsyslog (fichiers uniquement)
+      ansible.builtin.package:
+        name: rsyslog
+        state: present
+
+    - name: Décommenter la ligne cron.* dans rsyslog
+      ansible.builtin.lineinfile:
+        path: /etc/rsyslog.d/50-default.conf
+        regexp: '^#?cron\.\*'
+        line: 'cron.*    /var/log/cron.log'
+        state: present
+      notify: Handler_flag
+
+  handlers:
+    - name: Handler_flag
+      ansible.builtin.command: touch /tmp/rsyslog_handler_ran
