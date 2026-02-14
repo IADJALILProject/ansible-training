@@ -1,0 +1,20 @@
+- name: TP - Challenge blockinfile
+  hosts: localhost
+  connection: local
+  become: false
+
+  vars:
+    target_path: /tmp/config_ansible.txt
+    user_owner: "{{ lookup('env','USER') }}"
+
+  tasks:
+    - name: Insérer un bloc de configuration dans le fichier
+      ansible.builtin.blockinfile:
+        path: "{{ target_path }}"
+        create: true
+        owner: "{{ user_owner }}"
+        group: "{{ user_owner }}"
+        mode: '0600'
+        block: |
+          param1 = valeur1
+          param2 = valeur2
